@@ -1,0 +1,10 @@
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\bin\Debug\ImageService.exe.config
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\bin\Debug\ImageService.exe.config
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\bin\Debug\ImageService.exe
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\bin\Debug\ImageService.pdb
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.x.resources
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.ProjectInstaller.resources
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.csproj.GenerateResource.Cache
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.exe
+C:\Users\Gilad\Documents\Visual Studio 2015\Projects\Bar Ilan\Adv 2\ImageService\ImageService\obj\Debug\ImageService.pdb

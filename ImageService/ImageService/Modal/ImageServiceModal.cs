@@ -50,17 +50,23 @@ namespace ImageService.Modal
         {
             try
             {
+                // get the time the picture was taken
                 DateTime creationTime = GetCreationTime(path);
                 string targetDirectory = m_outputFolder + "\\" + creationTime.Year.ToString("D4") + "\\" +
                     creationTime.Month.ToString("D2");
-                string targetPath = targetDirectory + "\\" + creationTime.Day.ToString("D2") + "_" +
-                    creationTime.ToString("HH-mm-ss") + " " + Path.GetFileName(path);
-                // get the time the picture was taken
+                string fileName = creationTime.Day.ToString("D2") + "_" + creationTime.ToString("HH-mm-ss")
+                    + " " + Path.GetFileName(path);
+                string targetPath = Path.Combine(targetDirectory, fileName);
+
+                for (int i = 1; File.Exists(targetPath); i++)
+                {
+                    fileName = creationTime.Day.ToString("D2") + "_" + creationTime.ToString("HH-mm-ss")
+                        + " " + Path.GetFileNameWithoutExtension(path) + " (" + i + ")" + Path.GetExtension(path);
+                    targetPath = Path.Combine(targetDirectory, fileName);
+                }
 
                 // create the directory for the image
                 Directory.CreateDirectory(targetDirectory);
-
-                File.Copy(path, targetPath);
 
                 // creating thumbnail
                 using (Image img = Image.FromFile(path))
@@ -70,6 +76,8 @@ namespace ImageService.Modal
                     Directory.CreateDirectory(targetDirectory.Replace(m_outputFolder, m_outputFolder + "\\Thumbnails"));
                     thumbnail.Save(targetPath.Replace(m_outputFolder, m_outputFolder + "\\Thumbnails"));
                 }
+
+                File.Move(path, targetPath);
 
                 result = true;
                 return targetPath;

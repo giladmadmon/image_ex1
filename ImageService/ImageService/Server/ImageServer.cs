@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ImageService.Commands;
+using System.IO;
 
 namespace ImageService.Server
 {
@@ -39,12 +40,19 @@ namespace ImageService.Server
         /// <param name="directory"> the directory the handler listens to </param>
         public void createHandler(string directory)
         {
-            IDirectoryHandler dirHandler = new DirectoyHandler(m_controller, m_logging);
+            if (Directory.Exists(directory))
+            {
+                IDirectoryHandler dirHandler = new DirectoyHandler(m_controller, m_logging);
 
-            CommandRecieved += dirHandler.OnCommandRecieved;
-            dirHandler.DirectoryClose += CloseHandler;
+                CommandRecieved += dirHandler.OnCommandRecieved;
+                dirHandler.DirectoryClose += CloseHandler;
 
-            dirHandler.StartHandleDirectory(directory.Trim());
+                dirHandler.StartHandleDirectory(directory.Trim());
+            }
+            else
+            {
+                m_logging.Log("Directory \"" + directory + "\" does not exist!", Logging.Modal.MessageTypeEnum.FAIL);
+            }
         }
         /// <summary>
         /// send command to all the handlers.

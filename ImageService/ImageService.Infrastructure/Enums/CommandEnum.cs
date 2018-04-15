@@ -13,5 +13,3 @@ namespace ImageService.Infrastructure.Enums
     }
 }
 
-////////////////////////////////////// <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2"/>
-

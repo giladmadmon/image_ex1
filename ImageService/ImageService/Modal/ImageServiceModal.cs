@@ -22,6 +22,11 @@ namespace ImageService.Modal
         private int m_thumbnailSize;              // The Size Of The Thumbnail Size
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageServiceModal"/> class.
+        /// </summary>
+        /// <param name="outputFolder">The output folder.</param>
+        /// <param name="thumbnailSize">Size of the thumbnail.</param>
         public ImageServiceModal(string outputFolder, int thumbnailSize)
         {
             this.m_outputFolder = outputFolder;
@@ -33,39 +38,28 @@ namespace ImageService.Modal
             new FileInfo(outputFolder).Attributes |= FileAttributes.Hidden;
         }
 
+        /// <summary>
+        /// The Function Addes A file to the backup folder
+        /// </summary>
+        /// <param name="path">The Path of the Image</param>
+        /// <param name="result">The result of the command</param>
+        /// <returns>
+        /// the path to the new file if the command was successful, error otherwise.
+        /// </returns>
         public string AddFile(string path, out bool result)
         {
             try
             {
-                string targetDirectory;
-                string targetPath;
-
+                DateTime creationTime = GetCreationTime(path);
+                string targetDirectory = m_outputFolder + "\\" + creationTime.Year.ToString("D4") + "\\" +
+                    creationTime.Month.ToString("D2");
+                string targetPath = targetDirectory + "\\" + creationTime.Day.ToString("D2") + "_" +
+                    creationTime.ToString("HH-mm-ss") + " " + Path.GetFileName(path);
                 // get the time the picture was taken
-                DateTime creationTime;
-                try
-                {
-                    using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-                    using (Image myImage = Image.FromStream(fs, false, false))
-                    {
-                        PropertyItem propItem = myImage.GetPropertyItem(PICTURE_TAKING_TIME_PROP);
-                        /////////////////////////////////////////////////////////////////// CHECK REGEX
-                        Regex r = new Regex(":");
-                        string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                        creationTime = DateTime.Parse(dateTaken);
-                    }
-                }
-                catch
-                {
-                    creationTime = new FileInfo(path).CreationTime;
-                }
 
                 // create the directory for the image
-                targetDirectory = m_outputFolder + "\\" + creationTime.Year.ToString("D4") + "\\" +
-                    creationTime.Month.ToString("D2");
                 Directory.CreateDirectory(targetDirectory);
 
-                targetPath = targetDirectory + "\\" + creationTime.Day.ToString("D2") + "_" +
-                    creationTime.ToString("HH-mm-ss") + " " + Path.GetFileName(path);
                 File.Copy(path, targetPath);
 
                 // creating thumbnail
@@ -87,6 +81,39 @@ namespace ImageService.Modal
             }
         }
 
+        /// <summary>
+        /// Gets the creation time of the photo in the path
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns> the creation time of the photo </returns>
+        private static DateTime GetCreationTime(string path)
+        {
+            DateTime creationTime;
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                using (Image myImage = Image.FromStream(fs, false, false))
+                {
+                    PropertyItem propItem = myImage.GetPropertyItem(PICTURE_TAKING_TIME_PROP);
+                    /////////////////////////////////////////////////////////////////// CHECK REGEX
+                    Regex r = new Regex(":");
+                    string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                    creationTime = DateTime.Parse(dateTaken);
+                }
+            }
+            catch
+            {
+                creationTime = new FileInfo(path).CreationTime;
+            }
+
+            return creationTime;
+        }
+
+        /// <summary>
+        /// Gets the size of the thumbnail.
+        /// </summary>
+        /// <param name="img">The img.</param>
+        /// <returns> the size of the thumbnail </returns>
         private Size GetThumbnailSize(Image img)
         {
             // the factor of which the size of the img is going to change

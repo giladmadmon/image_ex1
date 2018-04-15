@@ -29,6 +29,11 @@ namespace ImageService.Controller.Handlers
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectoyHandler"/> class.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        /// <param name="logging">The logger which is responsible for the log.</param>
         public DirectoyHandler(IImageController controller, ILoggingService logging)
         {
             this.m_controller = controller;
@@ -37,6 +42,11 @@ namespace ImageService.Controller.Handlers
         }
 
         // Define the event handlers.
+        /// <summary>
+        /// Called when a file is created.
+        /// </summary>
+        /// <param name="source">The object which called the event.</param>
+        /// <param name="e">The <see cref="FileSystemEventArgs"/> instance containing the event data.</param>
         private void OnCreated(object source, FileSystemEventArgs e)
         {
             if (filters.Contains(Path.GetExtension(e.FullPath)))
@@ -49,6 +59,10 @@ namespace ImageService.Controller.Handlers
             }
         }
 
+        /// <summary>
+        /// The Function Recieves the directory to Handle
+        /// </summary>
+        /// <param name="dirPath">the directory to handle</param>
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void StartHandleDirectory(string dirPath)
         {
@@ -67,8 +81,13 @@ namespace ImageService.Controller.Handlers
             // Begin watching.
             m_dirWatcher.EnableRaisingEvents = true;
         }
-        // When a command comes- checks what kind it is: if closing- its closes the service,
-        //otherwise its calls to ExecuteCommand and writes to the log sucsess\failure
+
+        /// <summary>
+        /// When a command comes- checks what kind it is: if closing- its closes the service,
+        /// otherwise its calls to ExecuteCommand and writes to the log sucsess\failure
+        /// </summary>
+        /// <param name="sender">the object called to the event</param>
+        /// <param name="e">the event args required for this event</param>
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
             bool result;

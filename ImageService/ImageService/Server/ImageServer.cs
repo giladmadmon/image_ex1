@@ -43,7 +43,7 @@ namespace ImageService.Server
         {
             CommandRecievedEventArgs cmdEventArgs = new CommandRecievedEventArgs((int)commandId, args, path);
             CommandRecieved(this, cmdEventArgs);
-            /////////////////////////////////////////////////////////////////////////////////// LOG???
+            // LOG???
             m_logging.Log(DateTime.Now + path + " - " + commandId, Logging.Modal.MessageTypeEnum.INFO);
         }
         //////// – closes handlers
